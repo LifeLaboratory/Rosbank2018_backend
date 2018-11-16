@@ -4,7 +4,7 @@ from auth.api.sql.auth_provider import Provider
 
 
 def auth(user_data):
-    check = [names.LOGIN, names.PASSWORD]
+    check = [names.LOGIN, names.PASSWORD, names.PAGES]
     auth_data = dict.fromkeys(check, '')
     error = False
     for data in check:

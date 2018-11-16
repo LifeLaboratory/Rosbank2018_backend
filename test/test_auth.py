@@ -7,19 +7,47 @@ from auth.api.helpers.service import Gis
 
 
 class TestAuth(unittest.TestCase):
-    def test_auth_back(self):
+    def test_auth_back_client(self):
         data = {
                 names.LOGIN: 'boris',
-                names.PASSWORD: 'boris'
+                names.PASSWORD: 'boris',
+                names.PAGES: 0
                 }
         result = auth(data)
         self.assertEqual(result[0], 200)
         self.assertTrue(result[1], None)
         return
 
-    def test_auth_front(self):
+    def test_auth_back_staff(self):
+        data = {
+                names.LOGIN: 'andrey',
+                names.PASSWORD: 'andrey',
+                names.PAGES: 1
+                }
+        result = auth(data)
+        self.assertEqual(result[0], 200)
+        self.assertTrue(result[1], None)
+        return
+
+    def test_auth_front_client(self):
         s = req.Session()
-        data = {names.LOGIN: 'boris', names.PASSWORD: 'boris'}
+        data = {
+                names.LOGIN: 'boris',
+                names.PASSWORD: 'boris',
+                names.PAGES: 0
+                }
+        r = s.post(HOST + '/api/v1/auth', data=data)
+        result = Gis.converter(r.text)
+        self.assertTrue(result.get(names.SESSION, None), None)
+        return
+
+    def test_auth_front_staff(self):
+        s = req.Session()
+        data = {
+                names.LOGIN: 'andrey',
+                names.PASSWORD: 'andrey',
+                names.PAGES: 1
+                }
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)
         self.assertTrue(result.get(names.SESSION, None), None)
