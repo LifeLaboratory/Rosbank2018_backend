@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+  auth:
+    restart: always
+    build: auth/
+    volumes:
+      - ./auth/ :/auth/
+    expose:
+      - "13451"
+  chat:
+    restart: always
+    build: chat/
+    volumes:
+      - ./chat/ :/chat/
+    expose:
+      - "13452"
+  classification:
+    restart: always
+    build: classification/
+    volumes:
+      - ./classification/ :/classification/
+    expose:
+      - "13453"
+  proxy:
+    restart: always
+    build:
+      context:  ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "192.168.1.3:80:80"
+    links:
+      - auth
+      - chat
+      - classification
+  vk:
+    build: integrator_vk/
+    volumes:
+      - ./integrator_vk/ :/integrator_vk/
+  fb:
+    build: integrator_fb/
+    volumes:
+      - ./integrator_fb/ :/integrator_fb/
