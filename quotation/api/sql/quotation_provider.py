@@ -80,7 +80,7 @@ with
   )
 insert into quotation_history(id_quotation_from, id_quotation_to, cost, 
 name, coefficient_sales, coefficient_purchare, quant) 
-values ({id_quotation_from}, {id_quotation_to}, {cost}, (select name from _names), 
+values ({id_quotation_from}, {id_quotation_to}, {cost}::numeric(32, 6), (select name from _names), 
 {coefficient_sales}, {coefficient_purchare}, now())
 returning id_quotation_from""".format(**args)
         # print(query)
