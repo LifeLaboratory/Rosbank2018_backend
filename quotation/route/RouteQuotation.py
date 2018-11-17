@@ -2,13 +2,14 @@
 from quotation.api.helpers import base_errors as errors
 from quotation.api.helpers import base_name as names
 from flask_restful import Resource, reqparse
-from quotation.api.src.quotation import quotation_user, get_quotation_actual
+from quotation.api.src.quotation import *
 from quotation.api.sql.session_auth import Provider
 
 
 class Quotation(Resource):
     def __init__(self):
-        self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM]
+        self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
+                          names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.COST]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -42,10 +43,10 @@ class Quotation(Resource):
         error, data = self.parse_data()
         answer = {}
         if error == errors.OK:
+            error, answer = put_quotation_history(data)
+        if error == errors.OK:
             return answer, {'Access-Control-Allow-Origin': '*'}
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
-
-
 
     def option(self):
         return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}

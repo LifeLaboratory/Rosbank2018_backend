@@ -42,13 +42,13 @@ def get_quotation_actual():
     return errors.AUTH_FAILED, None
 
 
-def put_quotation_state(user_data):
+def put_quotation_history(user_data):
     """
     Метод добавляет данные о котировках в момент времени
     :return:
     """
     check = [names.ID_QUOTATION_FROM, names.ID_QUOTATION_TO, names.COST,
-             names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.NAME]
+             names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES]
     auth_data = dict.fromkeys(check, '')
     error = False
     for data in check:
@@ -60,4 +60,7 @@ def put_quotation_state(user_data):
     if error:
         return errors.AUTH_FAILED, None
     provider = Provider()
-    error, answer = provider.select_quotation_actual()
+    error, answer = provider.insert_quotation_history(user_data)
+    if error == errors.OK:
+        return errors.OK, answer
+    return errors.AUTH_FAILED, None

@@ -63,17 +63,26 @@ left join (
             return errors.OK, result
 
     @staticmethod
-    def select_quotation_actual(args):
+    def insert_quotation_history(args):
         """
-        Получает актуальные данные по котировкам
+        Добавить данные по котировкам в историю
         :param args:
         :return:
         """
         query = """
+with 
+  _names as (
+    select q1.name || '/' || q2.name as name
+    from quotation q1, quotation q2
+    where q1.id_quotation = {id_quotation_from} 
+      and q2.id_quotation = {id_quotation_to}
+    limit 1
+  )
 insert into quotation_history(id_quotation_from, id_quotation_to, cost, 
-name, coefficient_sales, coefficient_purchare) 
-values ()
-                """
+name, coefficient_sales, coefficient_purchare, quant) 
+values ({id_quotation_from}, {id_quotation_to}, {cost}, (select name from _names), 
+{coefficient_sales}, {coefficient_purchare}, now())
+returning id_quotation_from""".format(**args)
         # print(query)
         try:
             result = Sql.exec(query=query)

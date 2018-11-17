@@ -1,9 +1,9 @@
 import unittest
 import requests as req
-from auth.config.config import HOST
-import auth.api.helpers.base_name as names
+from quotation.config.config import HOST
+import quotation.api.helpers.base_name as names
 from auth.api.src.Authentication import auth
-from auth.api.helpers.service import Gis
+from quotation.api.helpers.service import Gis
 
 
 class TestAuth(unittest.TestCase):
@@ -37,6 +37,16 @@ class TestAuth(unittest.TestCase):
         data = {names.LOGIN: 'boris'}
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)
+        self.assertEqual(result.get(names.SESSION), None)
+        return
+
+    def test_insert_quotation_history(self):
+        s = req.Session()
+        data = {names.ID_QUOTATION_FROM: 2, names.ID_QUOTATION_TO: 1, names.COST: 1.2,
+             names.COEFFICIENT_PURCHARE: 0.2, names.COEFFICIENT_SALES: 0.1}
+        r = s.post(HOST + '/api/v1/quotation', data=data)
+        result = Gis.converter(r.text)
+        print(result)
         self.assertEqual(result.get(names.SESSION), None)
         return
 
