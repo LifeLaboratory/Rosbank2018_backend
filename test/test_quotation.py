@@ -2,7 +2,6 @@ import unittest
 import requests as req
 from quotation.config.config import HOST
 import quotation.api.helpers.base_name as names
-from auth.api.src.Authentication import auth
 from quotation.api.helpers.service import Gis
 from quotation.api.src.quotation import quotation_user, get_quotation_actual, transaction
 
@@ -61,10 +60,9 @@ class TestQuotation(unittest.TestCase):
 
     def test_list_quotation_user(self):
         s = req.Session()
-        r = s.get(HOST + "/api/v1/quotation?Session='2dc503ef-72d0-8ad3-7876-b06ac05615a7'&Action=list")
-        result = r.text
-        print(result)
-        # self.assertTrue(result.get(names.SESSION, None), None)
+        r = s.get(HOST + "/api/v1/quotation?Session=2dc503ef-72d0-8ad3-7876-b06ac05615a7&Action=list")
+        result = Gis.converter(r.text)
+        self.assertTrue(result.get("Quotation", None), None)
         return
 
     def test_trans_sale_back(self):
@@ -115,7 +113,7 @@ class TestQuotation(unittest.TestCase):
                 names.ACTION: 'graph'}
         r = s.post(HOST + '/api/v1/quotation', data=data)
         result = Gis.converter(r.text)
-        print(result)
+        # print(result)
         self.assertEqual(result.get(names.SESSION), None)
         return
 

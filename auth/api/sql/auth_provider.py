@@ -5,6 +5,10 @@ from auth.api.helpers.service import Sql
 
 class Provider:
     def select_user(self, args):
+        if args[names.PAGE] == "client":
+            args[names.PAGE] = 0
+        if args[names.PAGE] == "employee":
+            args[names.PAGE] = 1
         query = """
                     insert into "session"("session", "id_user")
                     select md5(random()::text || clock_timestamp()::text)::uuid
@@ -20,8 +24,8 @@ class Provider:
                       ) )"id_user"
                     where "id_user" is not null
                     returning "session" as "Session"
-                """.format(Login=args[names.LOGIN], Password=args[names.PASSWORD], Pages=args[names.PAGES])
-        print(query)
+                """.format(Login=args[names.LOGIN], Password=args[names.PASSWORD], Pages=args[names.PAGE])
+        # print(query)
         try:
             auth_data = Sql.exec(query=query)
         except:

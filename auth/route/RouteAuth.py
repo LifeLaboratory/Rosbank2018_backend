@@ -10,7 +10,7 @@ class Service(Resource):
         self._parser = reqparse.RequestParser()
         self._parser.add_argument(names.LOGIN)
         self._parser.add_argument(names.PASSWORD)
-        self._parser.add_argument(names.PAGES)
+        self._parser.add_argument(names.PAGE)
         self.__args = self._parser.parse_args()
 
     def parse_data(self):
@@ -18,10 +18,10 @@ class Service(Resource):
             data = dict()
             data[names.LOGIN] = self.__args.get(names.LOGIN, None)
             data[names.PASSWORD] = self.__args.get(names.PASSWORD, None)
-            data[names.PAGES] = self.__args.get(names.PAGES, None)
+            data[names.PAGE] = self.__args.get(names.PAGE, None)
         except:
             return errors.PARSE_DATA, None
-        if data[names.LOGIN] is None or data[names.PASSWORD] is None or data[names.PAGES] is None:
+        if data[names.LOGIN] is None or data[names.PASSWORD] is None or data[names.PAGE] is None:
             return errors.PARSE_DATA, None
         else:
             return errors.OK, data

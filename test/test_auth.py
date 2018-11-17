@@ -11,7 +11,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'boris',
                 names.PASSWORD: 'boris',
-                names.PAGES: 0
+                names.PAGE: 0
                 }
         result = auth(data)
         self.assertEqual(result[0], 200)
@@ -22,7 +22,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'andrey',
                 names.PASSWORD: 'andrey',
-                names.PAGES: 1
+                names.PAGE: 'employee'
                 }
         result = auth(data)
         self.assertEqual(result[0], 200)
@@ -34,7 +34,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'boris',
                 names.PASSWORD: 'boris',
-                names.PAGES: 0
+                names.PAGE: 0
                 }
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)
@@ -46,7 +46,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'andrey',
                 names.PASSWORD: 'andrey',
-                names.PAGES: 1
+                names.PAGE: 1
                 }
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)
