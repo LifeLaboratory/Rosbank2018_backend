@@ -32,6 +32,14 @@ class Quotation(Resource):
         error, data = self.parse_data()
         answer = {}
         # print(data)
+        if data.get(names.SESSION, None) is None:
+            return {"Quotation": [ {
+      "Name": "Session NOT FOUND",
+      "id_quotation_from": 1,
+      "id_quotation_to": 1,
+      "Count_sale": 1,
+      "Count_purchare": 1,
+    }]}, {'Access-Control-Allow-Origin': '*'}
         if error == errors.OK:
             if data.get(names.ACTION) == 'list' and data.get(names.SESSION):
                 error, answer = get_quotation_actual(data)

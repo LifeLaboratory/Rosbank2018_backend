@@ -108,9 +108,9 @@ with
 select 
   id_quotation_to
   , id_quotation_from
-  , Name
-  , (cost + coefficient_sales + (select pack from _pack))::double precision as Count_sale
-  , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
+  , Name as "Name"
+  , (cost + coefficient_sales + (select pack from _pack))::double precision as "Count_sale"
+  , (cost + coefficient_purchare + (select pack from _pack))::double precision as "Count_purchare"
 from quotation_trade
                 """.format(user_data.get('id_user'))
         # print(query)
@@ -208,7 +208,7 @@ returning 200 as "Status"
             """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], id_quotation_to=args[names.TO],
                    count_send=args[names.COUNT_SEND], action=action)
         try:
-            print(query)
+            # print(query)
             result = Sql.exec(query=query)
         except:
             return errors.SQL_ERROR, None
