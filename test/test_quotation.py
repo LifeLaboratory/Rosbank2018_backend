@@ -99,7 +99,7 @@ class TestQuotation(unittest.TestCase):
             names.FROM: 1,
             names.TO: 2,
             names.COUNT_SEND: 0.001,
-            names.SESSION: "7d8144e0-f15f-6b70-ab42-51da2f1a9d09"
+            names.SESSION: "89a4ea52-c883-e1da-1e1e-f39469d7dfb1"
         }
         r = s.post(HOST + '/api/v1/quotation', data=args)
         result = Gis.converter(r.text)
@@ -108,7 +108,8 @@ class TestQuotation(unittest.TestCase):
 
     def test_get_graph(self):
         s = req.Session()
-        data = {names.TO: 2, names.FROM: 1,
+        data = {names.TO: 2,
+                names.FROM: 1,
                 names.SESSION: "2dc503ef-72d0-8ad3-7876-b06ac05615a7",
                 names.ACTION: 'graph'}
         r = s.post(HOST + '/api/v1/quotation', data=data)
