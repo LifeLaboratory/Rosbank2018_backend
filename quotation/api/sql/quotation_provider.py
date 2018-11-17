@@ -287,7 +287,7 @@ with
 select 
   Quant::text as "Quant"
   , (cost + coefficient_sales + (select pack from _pack))::double precision as "Cost_sale"
-  , (cost + coefficient_purchare + (select pack from _pack))::double precision as "Cost_purchase"
+  , (cost - coefficient_purchare - (select pack from _pack))::double precision as "Cost_purchase"
 from quotation_history
 where id_quotation_to = {} and id_quotation_from = {}
 order by quant desc

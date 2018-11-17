@@ -57,7 +57,7 @@ class Quotation(Resource):
             if data.get(names.ACTION) == 'graph':
                 error, answer = get_graph(data)
                 if error == errors.OK:
-                    print("answer", answer)
+                    # print("answer", answer)
                     return answer, {'Access-Control-Allow-Origin': '*'}
             elif data[names.ACTION] is not None and data[names.SESSION] is not None\
                     and data[names.FROM] is not None and data[names.TO] is not None\

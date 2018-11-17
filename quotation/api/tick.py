@@ -2,7 +2,7 @@ import time
 import random
 import requests
 from quotation.api.helpers.service import Sql
-HOST = 'http://127.0.0.1:13452/api/v1/quotation'
+HOST = 'http://90.189.132.25/api/v1/quotation'
 
 
 def select_pair_quotation():
@@ -28,8 +28,8 @@ def send_post(rs):
 
 
 def generate_tick(pairs):
-    for j in range(1000):
-        count = random.randint(1, 5)
+    for j in range(10000):
+        count = random.randint(1, 7)
         _key = list(pairs.keys())
         rs = []
         for i in range(count):
