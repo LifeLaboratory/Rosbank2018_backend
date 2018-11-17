@@ -6,5 +6,5 @@ from quotation.api.src.quotation_method import *
 class Favicon(Resource):
     def get(self):
         return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
-    def option(self):
+    def options(self):
         return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}

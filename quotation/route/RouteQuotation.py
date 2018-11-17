@@ -73,5 +73,5 @@ class Quotation(Resource):
 
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
 
-    def option(self):
+    def options(self):
         return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
