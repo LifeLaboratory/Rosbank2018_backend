@@ -1,5 +1,5 @@
-import cote.api.helpers.base_errors as errors
-from cote.api.helpers.service import Sql
+import quotation.api.helpers.base_errors as errors
+from quotation.api.helpers.service import Sql
 
 
 class Provider:

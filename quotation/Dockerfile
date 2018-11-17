@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/cote
+WORKDIR /usr/src/quotation
 
 COPY requirements.txt ./
 RUN pip install --upgrade pip

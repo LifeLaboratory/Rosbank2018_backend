@@ -5,7 +5,7 @@ sys.path.append(os.getcwd()+'/../')
 sys.path.append(os.getcwd()+'../')
 import flask
 from flask_restful import Api
-from cote.route.route_list import ROUTES
+from quotation.route.route_list import ROUTES
 
 
 _app = flask.Flask(__name__)

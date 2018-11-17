@@ -1,6 +1,6 @@
 # coding=utf-8
 from flask_restful import Resource
-from cote.api.src.cote_method import *
+from quotation.api.src.quotation_method import *
 
 
 class Favicon(Resource):
