@@ -28,6 +28,7 @@ class Service(Resource):
 
     def post(self):
         error, data = self.parse_data()
+        print(data)
         if error == errors.OK:
             error, answer = auth(data)
             if error == errors.OK:
