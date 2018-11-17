@@ -75,3 +75,28 @@ def put_quotation_history(user_data):
     if error == errors.OK:
         return errors.OK, answer
     return errors.AUTH_FAILED, None
+
+
+def get_graph(user_data):
+    """
+    Метод добавляет данные о котировках в момент времени
+    :return:
+    """
+    check = [names.FROM, names.TO,
+             names.ID_USER]
+    auth_data = dict.fromkeys(check, '')
+    error = False
+    for data in check:
+        if user_data.get(data, None) is None:
+            auth_data[data] = 'Пустой параметр!'
+            error = True
+        else:
+            auth_data[data] = user_data[data]
+    if error:
+        return errors.AUTH_FAILED, None
+    provider = Provider()
+    print(user_data)
+    error, answer = provider.get_graph(user_data)
+    if error == errors.OK:
+        return errors.OK, answer
+    return errors.AUTH_FAILED, None

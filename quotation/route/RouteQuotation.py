@@ -10,7 +10,7 @@ class Quotation(Resource):
     def __init__(self):
         self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
                           names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.COST,
-                          names.ACTION]
+                          names.ACTION, names.TO, names.FROM]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -47,7 +47,10 @@ class Quotation(Resource):
         error, data = self.parse_data()
         answer = {}
         if error == errors.OK:
-            error, answer = put_quotation_history(data)
+            if data.get(names.ACTION) == 'graph':
+                error, answer = get_graph(data)
+            else:
+                error, answer = put_quotation_history(data)
         if error == errors.OK:
             return answer, {'Access-Control-Allow-Origin': '*'}
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}

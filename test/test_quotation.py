@@ -58,6 +58,17 @@ class TestAuth(unittest.TestCase):
         # self.assertTrue(result.get(names.SESSION, None), None)
         return
 
+    def test_get_graph(self):
+        s = req.Session()
+        data = {names.TO: 2, names.FROM: 1,
+                names.SESSION: "2dc503ef-72d0-8ad3-7876-b06ac05615a7",
+                names.ACTION: 'graph'}
+        r = s.post(HOST + '/api/v1/quotation', data=data)
+        result = Gis.converter(r.text)
+        print(result)
+        self.assertEqual(result.get(names.SESSION), None)
+        return
+
 
 if __name__ == '__main__':
     unittest.main()

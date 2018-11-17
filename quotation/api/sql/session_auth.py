@@ -17,7 +17,7 @@ class Provider:
         query = """
 select id_user
 from session
-where session.session = {}
+where session.session = '{}'
                 """.format(Session)
         # print(query)
         try:

@@ -7,9 +7,6 @@ class Provider:
     """
     Провайдер для работы с котировками
     """
-
-
-
     @staticmethod
     def select_user_name(args):
         """
@@ -116,6 +113,40 @@ select
   , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
 from quotation_trade
                 """.format(user_data.get('id_user'))
+        # print(query)
+        try:
+            result = Sql.exec(query=query)
+        except:
+            return errors.SQL_ERROR, None
+        if result == errors.SQL_ERROR:
+            return errors.SQL_ERROR, None
+        else:
+            return errors.OK, {'Quotation': result}
+
+    @staticmethod
+    def get_graph(user_data):
+        """
+        Получает актуальные данные по котировкам
+        :param args:
+        :return:
+        """
+        query = """
+with 
+  _pack as (
+    select pack
+    from users
+    where id_user = {}
+    limit 1
+  )
+select 
+  Quant::text
+  , (cost + coefficient_sales + (select pack from _pack))::double precision as Count_sale
+  , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
+from quotation_history
+where id_quotation_from = {} and id_quotation_to = {}
+order by quant desc
+limit 100
+                """.format(user_data.get('id_user'), user_data.get('From'), user_data.get('To'))
         # print(query)
         try:
             result = Sql.exec(query=query)
