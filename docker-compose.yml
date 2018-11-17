@@ -8,36 +8,10 @@ services:
       - ./auth/ :/auth/
     expose:
       - "13451"
-  chat:
+  quotation:
     restart: always
-    build: chat/
+    build: quotation/
     volumes:
-      - ./chat/ :/chat/
+      - ./quotation/ :/quotation/
     expose:
       - "13452"
-  classification:
-    restart: always
-    build: classification/
-    volumes:
-      - ./classification/ :/classification/
-    expose:
-      - "13453"
-  proxy:
-    restart: always
-    build:
-      context:  ./nginx
-      dockerfile: Dockerfile
-    ports:
-      - "192.168.1.3:80:80"
-    links:
-      - auth
-      - chat
-      - classification
-  vk:
-    build: integrator_vk/
-    volumes:
-      - ./integrator_vk/ :/integrator_vk/
-  fb:
-    build: integrator_fb/
-    volumes:
-      - ./integrator_fb/ :/integrator_fb/
