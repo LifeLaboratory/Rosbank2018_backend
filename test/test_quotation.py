@@ -24,6 +24,14 @@ class TestAuth(unittest.TestCase):
         # self.assertTrue(result.get(names.SESSION, None), None)
         return
 
+    def test_quotation_cabinet_front(self):
+        s = req.Session()
+        r = s.get(HOST + "/api/v1/quotation?Session='2dc503ef-72d0-8ad3-7876-b06ac05615a7'")
+        result = r.text
+        print(result)
+        # self.assertTrue(result.get(names.SESSION, None), None)
+        return
+
     def test_auth_none(self):
         s = req.Session()
         data = {names.LOGIN: 'boris'}
