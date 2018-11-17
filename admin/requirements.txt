@@ -1,0 +1,5 @@
+flask
+flask-restful
+psycopg2
+psycopg2-binary
+requests

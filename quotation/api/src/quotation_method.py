@@ -3,76 +3,76 @@ import quotation.api.helpers.base_errors as errors
 from quotation.api.sql.quotation_provider import Provider
 
 
-def quotation_user(user_data):
+def quotation_user(args):
     """
     Метод по ID формирует данные по валюте для кабинета пользователя
-    :param user_data:
+    :param args:
     :return:
     """
     check = [names.ID_USER]
-    auth_data = dict.fromkeys(check, '')
+    data = dict.fromkeys(check, '')
     error = False
-    for data in check:
-        if user_data.get(data, None) is None:
-            auth_data[data] = 'Пустой параметр!'
+    for c in check:
+        if args.get(c, None) is None:
+            data[c] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[data] = user_data[data]
+            data[c] = args[c]
     if error:
-        return errors.AUTH_FAILED, None
+        return errors.logic, None
     provider = Provider()
-    error, quotation = provider.select_quotation_user(auth_data)
-    error, name = provider.select_user_name(auth_data)
+    error, quotation = provider.select_quotation_user(data)
+    error, name = provider.select_user_name(data)
     answer = {
         "Name": name['name'],
         "Currency": quotation
     }
     if error == errors.OK:
         return errors.OK, answer
-    return errors.AUTH_FAILED, None
+    return errors.logic, None
 
 
-def get_quotation_actual(user_data):
+def get_quotation_actual(args):
     check = [names.ID_USER]
-    auth_data = dict.fromkeys(check, '')
+    data = dict.fromkeys(check, '')
     error = False
-    for data in check:
-        if user_data.get(data, None) is None:
-            auth_data[data] = 'Пустой параметр!'
+    for c in check:
+        if args.get(c, None) is None:
+            data[c] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[data] = user_data[data]
+            data[c] = args[c]
     if error:
-        return errors.AUTH_FAILED, None
+        return errors.logic, None
     provider = Provider()
-    error, answer = provider.select_quotation_actual(user_data)
+    error, answer = provider.select_quotation_actual(args)
     if error == errors.OK:
         return errors.OK, answer
-    return errors.AUTH_FAILED, None
+    return errors.logic, None
 
 
-def put_quotation_history(user_data):
+def put_quotation_history(args):
     """
     Метод добавляет данные о котировках в момент времени
     :return:
     """
     check = [names.ID_QUOTATION_FROM, names.ID_QUOTATION_TO, names.COST,
              names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES]
-    auth_data = dict.fromkeys(check, '')
+    data = dict.fromkeys(check, '')
     error = False
     for data in check:
-        if user_data.get(data, None) is None:
-            auth_data[data] = 'Пустой параметр!'
+        if args.get(data, None) is None:
+            data[data] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[data] = user_data[data]
+            data[data] = args[data]
     if error:
-        return errors.AUTH_FAILED, None
+        return errors.logic, None
     provider = Provider()
-    error, answer = provider.insert_quotation_history(user_data)
+    error, answer = provider.insert_quotation_history(args)
     if error == errors.OK:
         return errors.OK, answer
-    return errors.AUTH_FAILED, None
+    return errors.logic, None
 
 def transaction(args):
     """
@@ -87,26 +87,26 @@ def transaction(args):
         error, result = provider.insert_history_sale(args)
         return error, result
 
-def get_graph(user_data):
+def get_graph(args):
     """
     Метод добавляет данные о котировках в момент времени
     :return:
     """
     check = [names.FROM, names.TO,
              names.ID_USER]
-    auth_data = dict.fromkeys(check, '')
+    data = dict.fromkeys(check, '')
     error = False
-    for data in check:
-        if user_data.get(data, None) is None:
-            auth_data[data] = 'Пустой параметр!'
+    for c in check:
+        if args.get(c, None) is None:
+            data[c] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[data] = user_data[data]
+            data[c] = args[c]
     if error:
-        return errors.AUTH_FAILED, None
+        return errors.logic, None
     provider = Provider()
-    # print(user_data)
-    error, answer = provider.get_graph(user_data)
+    # print(args)
+    error, answer = provider.get_graph(args)
     if error == errors.OK:
         return errors.OK, answer
-    return errors.AUTH_FAILED, None
+    return errors.logic, None

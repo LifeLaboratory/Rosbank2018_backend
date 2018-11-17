@@ -30,7 +30,7 @@ class Provider:
             auth_data = Sql.exec(query=query)
         except:
             return errors.SQL_ERROR, None
-        if auth_data == errors.SQL_ERROR:
+        if auth_data == errors.SQL_ERROR or auth_data[0] is None:
             return errors.SQL_ERROR, None
         else:
             return errors.OK, auth_data[0]
