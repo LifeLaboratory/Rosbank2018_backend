@@ -15,6 +15,13 @@ services:
       - ./quotation/ :/quotation/
     expose:
       - "13452"
+  admin:
+    restart: always
+    build: quotation/
+    volumes:
+    - ./admin/ :/admin/
+    expose:
+    - "13453"
   proxy:
     restart: always
     build:
