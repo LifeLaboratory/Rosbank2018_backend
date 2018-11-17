@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 import psycopg2
-from quotation.config.config import DATABASE
+from cote.config.config import DATABASE
 from datetime import date, datetime
 from psycopg2.extras import RealDictCursor
-import quotation.api.helpers.base_errors as errors
+import cote.api.helpers.base_errors as errors
 
 
 def db_connect_new():

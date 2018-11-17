@@ -10,8 +10,8 @@ services:
       - "13451"
   quotation:
     restart: always
-    build: quotation/
+    build: cote/
     volumes:
-      - ./quotation/ :/quotation/
+      - ./cote/ :/cote/
     expose:
       - "13452"

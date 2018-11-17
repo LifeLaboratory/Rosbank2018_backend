@@ -1,6 +1,6 @@
-import quotation.api.helpers.base_name as names
-import quotation.api.helpers.base_errors as errors
-from quotation.api.sql.quotation_provider import Provider
+import cote.api.helpers.base_name as names
+import cote.api.helpers.base_errors as errors
+from cote.api.sql.quotation_provider import Provider
 
 
 def quotation_user(user_data):

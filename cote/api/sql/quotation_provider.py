@@ -1,6 +1,6 @@
-import quotation.api.helpers.base_name as names
-import quotation.api.helpers.base_errors as errors
-from quotation.api.helpers.service import Sql
+import cote.api.helpers.base_name as names
+import cote.api.helpers.base_errors as errors
+from cote.api.helpers.service import Sql
 
 
 class Provider:
@@ -42,7 +42,7 @@ select
  id_quotation as id_currency
  , name as Name_currency
  , cost::double precision
-from quotation q
+from cote q
 left join (
   select *
   from quotation_users
@@ -70,7 +70,7 @@ left join (
 with 
   _names as (
     select q1.name || '/' || q2.name as name
-    from quotation q1, quotation q2
+    from cote q1, cote q2
     where q1.id_quotation = {id_quotation_from} 
       and q2.id_quotation = {id_quotation_to}
     limit 1
@@ -88,7 +88,7 @@ returning id_quotation_to""".format(**args)
         if result == errors.SQL_ERROR:
             return errors.SQL_ERROR, None
         else:
-            return errors.OK, {'quotation': result}
+            return errors.OK, {'cote': result}
 
     @staticmethod
     def select_quotation_actual(user_data):

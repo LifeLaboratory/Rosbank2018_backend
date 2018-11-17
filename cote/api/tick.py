@@ -1,8 +1,8 @@
 import time
 import random
 import requests
-from quotation.api.helpers.service import Sql
-HOST = 'http://127.0.0.1:13452/api/v1/quotation'
+from cote.api.helpers.service import Sql
+HOST = 'http://127.0.0.1:13452/api/v1/cote'
 
 
 def select_pair_quotation():
