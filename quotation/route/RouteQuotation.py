@@ -19,8 +19,8 @@ class Quotation(Resource):
             data = dict()
             for argument in self.arguments:
                 data[argument] = self.__args.get(argument, None)
-                if data[argument]:
-                    print(argument, data[argument])
+                # if data[argument]:
+                #     print(argument, data[argument])
             if data[names.SESSION]:
                 p = Provider()
                 data[names.ID_USER] = p.select_id_user(data[names.SESSION])
