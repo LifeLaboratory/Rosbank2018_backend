@@ -1,9 +1,9 @@
 import unittest
 import requests as req
 from admin.config.config import HOST
-import admin.api.helpers.base_name as names
-from admin.api.src.admin_method import change_coefficient
+from admin.api.src.admin_method import *
 from admin.api.helpers.service import Gis
+import admin.api.helpers.base_name as names
 
 
 class TestAdmin(unittest.TestCase):
@@ -83,6 +83,33 @@ class TestAdmin(unittest.TestCase):
         self.assertEqual(result, 109)
 
         return
+
+    def test_change_pack_back(self):
+        args = {
+                names.ID_USER: 63,
+                names.PACK: 0.005
+                }
+        result = change_pack(args)
+        self.assertEqual(result[0], 200)
+        self.assertTrue(result[1][names.STATUS], 200)
+
+        return
+
+    def test_change_pack_front(self):
+        s = req.Session()
+        args = {
+            names.ID_USER: 63,
+            names.PACK: 0.005
+        }
+        r = s.post(HOST + '/api/v1/admin', data=args)
+        result = Gis.converter(r.text)
+        self.assertEqual(result, 200)
+
+    def test_list_users(self):
+        s = req.Session()
+        r = s.get(HOST + '/api/v1/admin?Action=list')
+        result = Gis.converter(r.text)
+        self.assertEqual(result, 200)
 
 
 if __name__ == '__main__':

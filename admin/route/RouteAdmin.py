@@ -2,13 +2,13 @@
 from flask_restful import Resource, reqparse
 from admin.api.src.admin_method import *
 from admin.api.sql.session_auth import Provider
-
+from admin.api.sql.admin_provider import Provider
 
 class Admin(Resource):
     def __init__(self):
         self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
-                          names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.COST,
-                          names.ACTION, names.QUANT, names.FROM, names.TO, names.COUNT_SEND]
+                          names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.PACK,
+                          names.ACTION]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -28,6 +28,16 @@ class Admin(Resource):
             return errors.PARSE_DATA, None
         return errors.OK, data
 
+    def get(self):
+        error, data = self.parse_data()
+        if error == errors.OK:
+            if data.get(names.ACTION) == "list":
+                p = Provider()
+                error, answer = p.list_users()
+                if error == errors.OK:
+                    return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}
+        return errors.ROUTE, {names.SESSION: errors.ROUTE}, {'Access-Control-Allow-Origin': '*'}
+
     def post(self):
         error, data = self.parse_data()
         if error == errors.OK:
@@ -37,6 +47,10 @@ class Admin(Resource):
                 if error == errors.OK:
                     return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}
 
+            if data.get(names.ID_USER, None) and data.get(names.PACK, None):
+                error, answer = change_pack(data)
+                if error == errors.OK:
+                    return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}
         return errors.ROUTE, {names.SESSION: errors.ROUTE}, {'Access-Control-Allow-Origin': '*'}
 
     def options(self):

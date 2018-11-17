@@ -39,3 +39,51 @@ returning 200 as "Status"
             return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
         else:
             return errors.OK, result[0]
+
+    @staticmethod
+    def change_pack(args):
+        """
+        Метод для ручного изменения пакета пользователя
+        :param args:
+        :return: dict
+        """
+        query = """
+update users
+    set pack = {pack}
+where id_user = {id_user}
+returning 200 as "Status"
+                    """.format(pack=args[names.PACK],
+                               id_user=names.ID_USER)
+        # print(query)
+        try:
+            result = Sql.exec(query=query)
+        except:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        if result == errors.SQL_ERROR:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        else:
+            return errors.OK, result[0]
+
+    @staticmethod
+    def list_users():
+        """
+        Получение списка клиентов
+        """
+        query = """
+select id_user
+       , name
+       , login
+       , pack
+from users
+where privilege = 0
+                """
+        print(query)
+        try:
+            result = Sql.exec(query=query)
+        except:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        if result == errors.SQL_ERROR:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        else:
+            return errors.OK, result[0]
+
