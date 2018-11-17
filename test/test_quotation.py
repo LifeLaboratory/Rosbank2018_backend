@@ -50,6 +50,14 @@ class TestAuth(unittest.TestCase):
         self.assertEqual(result.get(names.SESSION), None)
         return
 
+    def test_list_quotation_user(self):
+        s = req.Session()
+        r = s.get(HOST + "/api/v1/quotation?Session='2dc503ef-72d0-8ad3-7876-b06ac05615a7'&Action=list")
+        result = r.text
+        print(result)
+        # self.assertTrue(result.get(names.SESSION, None), None)
+        return
+
 
 if __name__ == '__main__':
     unittest.main()

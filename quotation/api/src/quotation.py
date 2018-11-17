@@ -34,9 +34,20 @@ def quotation_user(user_data):
     return errors.AUTH_FAILED, None
 
 
-def get_quotation_actual():
+def get_quotation_actual(user_data):
+    check = [names.ID_USER]
+    auth_data = dict.fromkeys(check, '')
+    error = False
+    for data in check:
+        if user_data.get(data, None) is None:
+            auth_data[data] = 'Пустой параметр!'
+            error = True
+        else:
+            auth_data[data] = user_data[data]
+    if error:
+        return errors.AUTH_FAILED, None
     provider = Provider()
-    error, answer = provider.select_quotation_actual()
+    error, answer = provider.select_quotation_actual(user_data)
     if error == errors.OK:
         return errors.OK, answer
     return errors.AUTH_FAILED, None

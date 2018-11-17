@@ -94,21 +94,28 @@ returning id_quotation_from""".format(**args)
             return errors.OK, {'quotation': result}
 
     @staticmethod
-    def select_quotation_actual():
+    def select_quotation_actual(user_data):
         """
         Получает актуальные данные по котировкам
         :param args:
         :return:
         """
         query = """
+with 
+  _pack as (
+    select pack
+    from users
+    where id_user = {}
+    limit 1
+  )
 select 
   id_quotation_from
   , id_quotation_to
   , Name
-  , cost + coefficient_sales as Count_sale
-  , cost + coefficient_purchare as Count_purchare
+  , (cost + coefficient_sales + (select pack from _pack))::double precision as Count_sale
+  , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
 from quotation_trade
-                """
+                """.format(user_data.get('id_user'))
         # print(query)
         try:
             result = Sql.exec(query=query)
@@ -117,4 +124,4 @@ from quotation_trade
         if result == errors.SQL_ERROR:
             return errors.SQL_ERROR, None
         else:
-            return errors.OK, {'quotation': result}
+            return errors.OK, {'Quotation': result}
