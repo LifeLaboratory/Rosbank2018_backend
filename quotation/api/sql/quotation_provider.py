@@ -140,8 +140,8 @@ with
   )
 select 
   Quant::text
-  , (cost + coefficient_sales + (select pack from _pack))::double precision as Count_sale
-  , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
+  , (cost + coefficient_sales + (select pack from _pack))::double precision as Cost_sale
+  , (cost + coefficient_purchare + (select pack from _pack))::double precision as Cost_purchare
 from quotation_history
 where id_quotation_from = {} and id_quotation_to = {}
 order by quant desc
