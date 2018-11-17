@@ -32,14 +32,6 @@ class Quotation(Resource):
         error, data = self.parse_data()
         answer = {}
         # print(data)
-        if data.get(names.SESSION, None) is None:
-            return {"Quotation": [ {
-      "Name": "Session NOT FOUND",
-      "id_quotation_from": 1,
-      "id_quotation_to": 1,
-      "Count_sale": 1,
-      "Count_purchare": 1,
-    }]}, {'Access-Control-Allow-Origin': '*'}
         if error == errors.OK:
             if data.get(names.ACTION) == 'list' and data.get(names.SESSION):
                 error, answer = get_quotation_actual(data)
@@ -70,8 +62,9 @@ class Quotation(Resource):
                 error, answer = put_quotation_history(data)
                 if error == errors.OK:
                     return answer, {'Access-Control-Allow-Origin': '*'}
-
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
 
-    def option(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
+    def options(self):
+        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
+                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
+                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}

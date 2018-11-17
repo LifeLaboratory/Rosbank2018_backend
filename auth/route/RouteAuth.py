@@ -34,5 +34,7 @@ class Service(Resource):
                 return answer, {'Access-Control-Allow-Origin': '*'}
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
 
-    def option(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
+    def options(self):
+        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
+                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
+                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}

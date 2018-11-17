@@ -28,7 +28,6 @@ class Admin(Resource):
             return errors.PARSE_DATA, None
         return errors.OK, data
 
-
     def post(self):
         error, data = self.parse_data()
         if error == errors.OK:
@@ -40,5 +39,7 @@ class Admin(Resource):
 
         return errors.ROUTE, {names.SESSION: errors.ROUTE}, {'Access-Control-Allow-Origin': '*'}
 
-    def option(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
+    def options(self):
+        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
+                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
+                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}

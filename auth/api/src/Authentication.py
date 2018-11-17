@@ -7,12 +7,12 @@ def auth(user_data):
     check = [names.LOGIN, names.PASSWORD, names.PAGE]
     auth_data = dict.fromkeys(check, '')
     error = False
-    for data in check:
-        if user_data.get(data, None) is None:
-            auth_data[data] = 'Пустой параметр!'
+    for c in check:
+        if user_data.get(c, None) is None:
+            auth_data[c] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[data] = user_data[data]
+            auth_data[c] = user_data[c]
     if error:
         return errors.AUTH_FAILED, None
     provider = Provider()

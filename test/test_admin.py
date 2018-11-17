@@ -6,7 +6,7 @@ from admin.api.src.admin_method import change_coefficient
 from admin.api.helpers.service import Gis
 
 
-class TestAadmin(unittest.TestCase):
+class TestAdmin(unittest.TestCase):
     def test_change_coefficients_back_sales(self):
         args = {
                 names.ID_QUOTATION_FROM: 1,
@@ -83,3 +83,7 @@ class TestAadmin(unittest.TestCase):
         self.assertEqual(result, 109)
 
         return
+
+
+if __name__ == '__main__':
+    unittest.main()

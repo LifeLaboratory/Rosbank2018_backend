@@ -118,5 +118,6 @@ class TestQuotation(unittest.TestCase):
         self.assertEqual(result.get(names.SESSION), None)
         return
 
+
 if __name__ == '__main__':
     unittest.main()
