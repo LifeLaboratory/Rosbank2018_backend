@@ -23,12 +23,10 @@ def quotation_user(user_data):
     provider = Provider()
     error, quotation = provider.select_quotation_user(auth_data)
     error, name = provider.select_user_name(auth_data)
-    print(name)
     answer = {
         "Name": name['name'],
         "Currency": quotation
     }
-    print(answer)
     if error == errors.OK:
         return errors.OK, answer
     return errors.AUTH_FAILED, None
@@ -76,6 +74,18 @@ def put_quotation_history(user_data):
         return errors.OK, answer
     return errors.AUTH_FAILED, None
 
+def transaction(args):
+    """
+    Метод проводит транзакцию покупки/продажи валюты
+    :return:
+    """
+    provider = Provider()
+    error, check_cost = provider.check_cost_user(args)
+    if check_cost[1]["cost"] - (check_cost[0]["cost"]*float(args[names.COUNT_SEND])) >= 0:
+        args["Cost_from"] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
+        error, result = provider.update_quotation_users(args)
+        error, result = provider.insert_history_sale(args)
+        return error, result
 
 def get_graph(user_data):
     """
@@ -95,7 +105,7 @@ def get_graph(user_data):
     if error:
         return errors.AUTH_FAILED, None
     provider = Provider()
-    print(user_data)
+    # print(user_data)
     error, answer = provider.get_graph(user_data)
     if error == errors.OK:
         return errors.OK, answer

@@ -47,7 +47,7 @@ def generate_tick(pairs):
             rs.append(temp)
         # print(rs)
         # send_post(rs)
-        print(pairs[(2, 1)])
+        # print(pairs[(2, 1)])
         # time.sleep(1)
 
 

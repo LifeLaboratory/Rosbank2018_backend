@@ -7,4 +7,4 @@ DATABASE = {
     "password": "ARM_SYSTEM"
 }
 
-HOST = "http://127.0.0.1:13452"
+HOST = "http://0.0.0.0:13451"

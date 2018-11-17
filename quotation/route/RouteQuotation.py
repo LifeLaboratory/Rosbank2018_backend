@@ -4,13 +4,15 @@ from quotation.api.helpers import base_name as names
 from flask_restful import Resource, reqparse
 from quotation.api.src.quotation import *
 from quotation.api.sql.session_auth import Provider
+from quotation.api.helpers.service import Gis
+from datetime import datetime
 
 
 class Quotation(Resource):
     def __init__(self):
         self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
                           names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.COST,
-                          names.ACTION, names.TO, names.FROM]
+                          names.ACTION, names.QUANT, names.FROM, names.TO, names.COUNT_SEND]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -18,9 +20,11 @@ class Quotation(Resource):
 
     def parse_data(self):
         try:
-            data = dict(short=None, long=None)
+            data = dict()
             for argument in self.arguments:
                 data[argument] = self.__args.get(argument, None)
+                if data[argument]:
+                    print(argument, data[argument])
             if data[names.SESSION]:
                 p = Provider()
                 data[names.ID_USER] = p.select_id_user(data[names.SESSION])
@@ -31,7 +35,7 @@ class Quotation(Resource):
     def get(self):
         error, data = self.parse_data()
         answer = {}
-        print(data)
+        # print(data)
         if error == errors.OK:
             if data.get(names.ACTION) == 'list' and data.get(names.SESSION):
                 error, answer = get_quotation_actual(data)
@@ -45,14 +49,24 @@ class Quotation(Resource):
 
     def post(self):
         error, data = self.parse_data()
-        answer = {}
         if error == errors.OK:
             if data.get(names.ACTION) == 'graph':
                 error, answer = get_graph(data)
+                if error == errors.OK:
+                    print("answer", answer)
+                    return answer, {'Access-Control-Allow-Origin': '*'}
+            elif data[names.ACTION] is not None and data[names.SESSION] is not None\
+                    and data[names.FROM] is not None and data[names.TO] is not None\
+                    and data[names.COUNT_SEND]:
+                # print(data)
+                error, answer = transaction(data)
+                if error == errors.OK:
+                    return answer, {'Access-Control-Allow-Origin': '*'}
             else:
                 error, answer = put_quotation_history(data)
-        if error == errors.OK:
-            return answer, {'Access-Control-Allow-Origin': '*'}
+                if error == errors.OK:
+                    return answer, {'Access-Control-Allow-Origin': '*'}
+
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
 
     def option(self):
