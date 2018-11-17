@@ -3,7 +3,7 @@ import requests as req
 from quotation.config.config import HOST
 import quotation.api.helpers.base_name as names
 from quotation.api.helpers.service import Gis
-from quotation.api.src.quotation import quotation_user, get_quotation_actual, transaction
+from quotation.api.src.quotation_method import quotation_user, get_quotation_actual, transaction
 
 
 class TestQuotation(unittest.TestCase):

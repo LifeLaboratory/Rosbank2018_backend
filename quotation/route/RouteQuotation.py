@@ -1,6 +1,6 @@
 # coding=utf-8
 from flask_restful import Resource, reqparse
-from quotation.api.src.quotation import *
+from quotation.api.src.quotation_method import *
 from quotation.api.sql.session_auth import Provider
 
 
