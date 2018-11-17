@@ -96,12 +96,12 @@ def get_graph(args):
              names.ID_USER]
     data = dict.fromkeys(check, '')
     error = False
-    for data in check:
-        if args.get(data, None) is None:
-            data[data] = 'Пустой параметр!'
+    for c in check:
+        if args.get(c, None) is None:
+            data[c] = 'Пустой параметр!'
             error = True
         else:
-            data[data] = args[data]
+            data[c] = args[c]
     if error:
         return errors.logic, None
     provider = Provider()

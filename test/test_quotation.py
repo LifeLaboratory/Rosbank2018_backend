@@ -10,7 +10,6 @@ class TestQuotation(unittest.TestCase):
     def test_quotation_front(self):
         s = req.Session()
         r = s.get(HOST + "/api/v1/quotation?Session=db09824d-ef98-6811-9a83-ce2ab340b240&Action=list")
-        result = r.text
         self.assertTrue(Gis.converter(r.text).get("Quotation", None), None)
         return
 
@@ -43,20 +42,10 @@ class TestQuotation(unittest.TestCase):
     def test_quotation_cabinet_none(self):
         s = req.Session()
         r = s.get(HOST + "/api/v1/quotation?Session='2dc508ad3-7876-b06ac05615a7'")
-        result = r.text
         self.assertFalse(Gis.converter(r.text).get("Name", None), None)
         self.assertFalse(Gis.converter(r.text).get("Currency", None), None)
         return
 
-    def test_insert_quotation_history(self):
-        s = req.Session()
-        data = {names.ID_QUOTATION_FROM: 2, names.ID_QUOTATION_TO: 1, names.COST: 1.2,
-             names.COEFFICIENT_PURCHARE: 0.2, names.COEFFICIENT_SALES: 0.1}
-        r = s.post(HOST + '/api/v1/quotation', data=data)
-        result = Gis.converter(r.text)
-        print(result)
-        self.assertEqual(result.get(names.SESSION), None)
-        return
 
     def test_list_quotation_user(self):
         s = req.Session()
@@ -73,7 +62,7 @@ class TestQuotation(unittest.TestCase):
                 names.COUNT_SEND: 0.001,
                 names.ID_USER: 63
                 }
-        error, result = transaction(args)
+        print(result)
         self.assertEqual(result.get(names.STATUS, None), 200)
         self.assertEqual(error, 200)
         return

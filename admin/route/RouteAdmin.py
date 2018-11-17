@@ -8,7 +8,7 @@ class Admin(Resource):
     def __init__(self):
         self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
                           names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.PACK,
-                          names.ACTION]
+                          names.ACTION, names.ID_USER]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -35,7 +35,7 @@ class Admin(Resource):
                 p = Provider()
                 error, answer = p.list_users()
                 if error == errors.OK:
-                    return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}
+                    return answer, {'Access-Control-Allow-Origin': '*'}
         return errors.ROUTE, {names.SESSION: errors.ROUTE}, {'Access-Control-Allow-Origin': '*'}
 
     def post(self):
@@ -47,7 +47,7 @@ class Admin(Resource):
                 if error == errors.OK:
                     return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}
 
-            if data.get(names.ID_USER, None) and data.get(names.PACK, None):
+            if data.get(names.ID_USER, None) is not None and data.get(names.PACK, None) is not None:
                 error, answer = change_pack(data)
                 if error == errors.OK:
                     return errors.OK, answer, {'Access-Control-Allow-Origin': '*'}

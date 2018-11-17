@@ -102,6 +102,7 @@ class TestAdmin(unittest.TestCase):
             names.PACK: 0.005
         }
         r = s.post(HOST + '/api/v1/admin', data=args)
+        print(r.text)
         result = Gis.converter(r.text)
         self.assertEqual(result, 200)
 
@@ -109,7 +110,7 @@ class TestAdmin(unittest.TestCase):
         s = req.Session()
         r = s.get(HOST + '/api/v1/admin?Action=list')
         result = Gis.converter(r.text)
-        self.assertEqual(result, 200)
+        self.assertTrue(result, None)
 
 
 if __name__ == '__main__':
