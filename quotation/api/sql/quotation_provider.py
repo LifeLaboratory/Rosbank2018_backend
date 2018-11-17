@@ -75,11 +75,11 @@ with
       and q2.id_quotation = {id_quotation_to}
     limit 1
   )
-insert into quotation_history(id_quotation_from, id_quotation_to, cost, 
+insert into quotation_history(id_quotation_to, id_quotation_from, cost, 
 name, coefficient_sales, coefficient_purchare, quant) 
-values ({id_quotation_from}, {id_quotation_to}, {cost}::numeric(32, 6), (select name from _names), 
+values ({id_quotation_to}, {id_quotation_from}, {cost}::numeric(32, 6), (select name from _names), 
 {coefficient_sales}, {coefficient_purchare}, now())
-returning id_quotation_from""".format(**args)
+returning id_quotation_to""".format(**args)
         # print(query)
         try:
             result = Sql.exec(query=query)
@@ -106,8 +106,8 @@ with
     limit 1
   )
 select 
-  id_quotation_from
-  , id_quotation_to
+  id_quotation_to
+  , id_quotation_from
   , Name
   , (cost + coefficient_sales + (select pack from _pack))::double precision as Count_sale
   , (cost + coefficient_purchare + (select pack from _pack))::double precision as Count_purchare
@@ -143,7 +143,7 @@ select
   , (cost + coefficient_sales + (select pack from _pack))::double precision as Cost_sale
   , (cost + coefficient_purchare + (select pack from _pack))::double precision as Cost_purchare
 from quotation_history
-where id_quotation_from = {} and id_quotation_to = {}
+where id_quotation_to = {} and id_quotation_from = {}
 order by quant desc
 limit 100
                 """.format(user_data.get('id_user'), user_data.get('From'), user_data.get('To'))
