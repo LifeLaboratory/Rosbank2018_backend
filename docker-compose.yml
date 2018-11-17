@@ -17,7 +17,7 @@ services:
       - "13452"
   admin:
     restart: always
-    build: quotation/
+    build: admin/
     volumes:
     - ./admin/ :/admin/
     expose:
@@ -32,3 +32,4 @@ services:
     links:
       - auth
       - quotation
+      - admin
