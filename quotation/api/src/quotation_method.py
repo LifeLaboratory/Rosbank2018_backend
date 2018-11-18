@@ -82,16 +82,26 @@ def transaction(args):
     provider = Provider()
     error, check_cost = provider.check_cost_user(args)
     print("ЦЕНА ПОКУПКИ КЛИЕНТА", check_cost[0]["cost"])
-    if check_cost[1]["cost"] - (check_cost[0]["cost"]*float(args[names.COUNT_SEND])) >= 0:
-        args[names.COST_USER] = check_cost[0]["cost"]
-        args[names.COST_FROM] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
-        check_action(args)
-        error, result = provider.update_quotation_users(args)
-        sleep(1)
-        error, result = provider.insert_history_purchase(args)
-        return error, result
-    else:
-        return errors.OK, {names.STATUS: errors.NO_BALANCE}
+    if args[names.ACTION] == "sales":
+        if check_cost[1]["cost"] - (check_cost[0]["cost"]*float(args[names.COUNT_SEND])) >= 0:
+            args[names.COST_USER] = check_cost[0]["cost"]
+            args[names.COST_FROM] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
+            check_action(args)
+            error, result = provider.update_quotation_users(args)
+            error, result = provider.insert_history_purchase(args)
+            return error, result
+        else:
+            return errors.OK, {names.STATUS: errors.NO_BALANCE}
+    if args[names.ACTION] == "purchase":
+        if check_cost[1]["cost"] - check_cost[0]["cost"] >= 0:
+            args[names.COST_USER] = check_cost[0]["cost"]
+            args[names.COST_FROM] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
+            check_action(args)
+            error, result = provider.update_quotation_users(args)
+            error, result = provider.insert_history_purchase(args)
+            return error, result
+        else:
+            return errors.OK, {names.STATUS: errors.NO_BALANCE}
 
 def check_action(args):
     if args.get(names.ACTION) == "purchase":

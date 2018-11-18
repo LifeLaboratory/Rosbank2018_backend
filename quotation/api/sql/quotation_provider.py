@@ -254,15 +254,27 @@ select
         :param args:
         :return:
         """
-        query = """
-update quotation_users
-set "cost" = "cost" - {cost_user}
-where id_user = {id_user} and id_quotation = {id_quotation_from};
-update quotation_users
-set "cost" = "cost" + {count_send}
-where id_user = {id_user} and id_quotation = {id_quotation_to};
-            """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], count_send=args[names.COUNT_SEND],
-                       id_quotation_to=args[names.TO], cost_user=args[names.COST_USER])
+        if args[names.ACTION] == "purchase":
+            query = """
+            update quotation_users
+            set "cost" = "cost" - {cost_from}
+            where id_user = {id_user} and id_quotation = {id_quotation_from};
+            update quotation_users
+            set "cost" = "cost" + {count_send}
+            where id_user = {id_user} and id_quotation = {id_quotation_to};
+                        """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM],
+                                   count_send=args[names.COUNT_SEND],
+                                   id_quotation_to=args[names.TO], cost_from=args[names.COST_FROM])
+        if args[names.ACTION] == "sales":
+            query = """
+    update quotation_users
+    set "cost" = "cost" - {cost_user}
+    where id_user = {id_user} and id_quotation = {id_quotation_from};
+    update quotation_users
+    set "cost" = "cost" + {count_send}
+    where id_user = {id_user} and id_quotation = {id_quotation_to};
+                """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], count_send=args[names.COUNT_SEND],
+                           id_quotation_to=args[names.TO], cost_user=args[names.COST_USER])
         try:
             # print(query)
             result = Sql.exec(query=query)
