@@ -290,6 +290,7 @@ with
   )
 select 
   Quant::text as "Quant"
+  , cost as "Cost"
   , (cost + coefficient_sales + reserve + (select pack from _pack))::double precision as "Cost_sale"
   , (cost - coefficient_purchare + reserve - (select pack from _pack))::double precision as "Cost_purchase"
 from quotation_history
