@@ -112,6 +112,10 @@ select
   , (cost + coefficient_sales +reserve+ (select pack from _pack))::double precision as "Count_sale"
   , (cost + coefficient_purchare +reserve+ (select pack from _pack))::double precision as "Count_purchare"
 from quotation_trade
+where id_quotation_to = 3 and id_quotation_from = 2
+      or id_quotation_to = 3 and id_quotation_from = 1
+      or id_quotation_to = 2 and id_quotation_from = 1
+      or id_quotation_to = 4 and id_quotation_from = 1
                 """.format(user_data.get('id_user'))
         # print(query)
         try:
