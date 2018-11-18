@@ -100,7 +100,7 @@ returning id_quotation_to""".format(**args)
         query = """
 with 
   _pack as (
-    select pack
+    select pack + rating
     from users
     where id_user = {}
     limit 1
@@ -133,7 +133,7 @@ from quotation_trade
         query = """
 with quot as (
 select 
-(   {cost_user} + "coefficient_sales" + reserve + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+(   {cost_user} + "coefficient_sales" + reserve + (select "pack" + rating from users where "id_user" = {id_user}))::double precision as "cost" 
     ,"cost" as "cost_bank"
     , "name"
     , "coefficient_sales" as "coefficient"
@@ -184,7 +184,7 @@ returning 200 as "Status"
         query = """
 with quot as (
 select 
-(   "cost" {action} "coefficient_sales" + reserve {action} (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+(   "cost" {action} "coefficient_sales" + reserve {action} (select "pack" + rating from users where "id_user" = {id_user}))::double precision as "cost" 
     ,"cost" as "cost_bank"
     , "name"
     , "coefficient_sales" as "coefficient"
@@ -283,7 +283,7 @@ where id_user = {id_user} and id_quotation = {id_quotation_to};
         query = """
 with 
   _pack as (
-    select pack
+    select pack + rating
     from users
     where id_user = {}
     limit 1
