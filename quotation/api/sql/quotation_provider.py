@@ -109,8 +109,8 @@ select
   id_quotation_to
   , id_quotation_from
   , Name as "Name"
-  , (cost + coefficient_sales + (select pack from _pack))::double precision as "Count_sale"
-  , (cost + coefficient_purchare + (select pack from _pack))::double precision as "Count_purchare"
+  , (cost + coefficient_sales +reserve+ (select pack from _pack))::double precision as "Count_sale"
+  , (cost + coefficient_purchare +reserve+ (select pack from _pack))::double precision as "Count_purchare"
 from quotation_trade
                 """.format(user_data.get('id_user'))
         # print(query)
@@ -133,7 +133,7 @@ from quotation_trade
         query = """
 with quot as (
 select 
-(   {cost_user} + "coefficient_sales" + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+(   {cost_user} + "coefficient_sales" + reserve + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
     ,"cost" as "cost_bank"
     , "name"
     , "coefficient_sales" as "coefficient"
@@ -184,7 +184,7 @@ returning 200 as "Status"
         query = """
 with quot as (
 select 
-(   "cost" {action} "coefficient_sales" {action} (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+(   "cost" {action} "coefficient_sales" + reserve {action} (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
     ,"cost" as "cost_bank"
     , "name"
     , "coefficient_sales" as "coefficient"
@@ -290,8 +290,8 @@ with
   )
 select 
   Quant::text as "Quant"
-  , (cost + coefficient_sales + (select pack from _pack))::double precision as "Cost_sale"
-  , (cost - coefficient_purchare - (select pack from _pack))::double precision as "Cost_purchase"
+  , (cost + coefficient_sales + reserve + (select pack from _pack))::double precision as "Cost_sale"
+  , (cost - coefficient_purchare + reserve - (select pack from _pack))::double precision as "Cost_purchase"
 from quotation_history
 where id_quotation_to = {} and id_quotation_from = {}
 order by quant desc
