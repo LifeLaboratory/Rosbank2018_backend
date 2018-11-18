@@ -76,9 +76,9 @@ with
     limit 1
   )
 insert into quotation_history(id_quotation_to, id_quotation_from, cost, 
-name, coefficient_sales, coefficient_purchare, quant) 
+name, coefficient_sales, coefficient_purchare, quant, reserve) 
 values ({id_quotation_to}, {id_quotation_from}, {cost}::numeric(32, 6), (select name from _names), 
-{coefficient_sales}, {coefficient_purchare}, now())
+{coefficient_sales}, {coefficient_purchare}, now(), 0.0)
 returning id_quotation_to""".format(**args)
         # print(query)
         try:
