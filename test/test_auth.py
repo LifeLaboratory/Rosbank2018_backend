@@ -34,7 +34,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'boris',
                 names.PASSWORD: 'boris',
-                names.PAGE: 0
+                names.PAGE: 'client'
                 }
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)
@@ -46,7 +46,7 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'andrey',
                 names.PASSWORD: 'andrey',
-                names.PAGE: 1
+                names.PAGE: 'employee'
                 }
         r = s.post(HOST + '/api/v1/auth', data=data)
         result = Gis.converter(r.text)

@@ -15,6 +15,13 @@ services:
       - ./quotation/ :/quotation/
     expose:
       - "13452"
+  admin:
+    restart: always
+    build: admin/
+    volumes:
+    - ./admin/ :/admin/
+    expose:
+    - "13453"
   proxy:
     restart: always
     build:
@@ -25,3 +32,4 @@ services:
     links:
       - auth
       - quotation
+      - admin

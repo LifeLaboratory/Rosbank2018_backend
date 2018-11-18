@@ -28,7 +28,6 @@ class Service(Resource):
 
     def post(self):
         error, data = self.parse_data()
-        print(data)
         if error == errors.OK:
             error, answer = auth(data)
             if error == errors.OK:
@@ -36,4 +35,6 @@ class Service(Resource):
         return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
 
     def options(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*'}
+        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
+                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
+                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}
