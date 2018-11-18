@@ -54,19 +54,6 @@ class TestQuotation(unittest.TestCase):
         self.assertTrue(result.get("Quotation", None), None)
         return
 
-    def test_trans_sale_back(self):
-        args = {
-                names.ACTION: "sales",
-                names.FROM: 1,
-                names.TO: 2,
-                names.COUNT_SEND: 0.001,
-                names.ID_USER: 63
-                }
-        print(result)
-        self.assertEqual(result.get(names.STATUS, None), 200)
-        self.assertEqual(error, 200)
-        return
-
     def test_trans_purchase_front(self):
         s = req.Session()
         args = {
@@ -84,10 +71,10 @@ class TestQuotation(unittest.TestCase):
     def test_trans_sale_front(self):
         s = req.Session()
         args = {
-            names.ACTION: "sale",
+            names.ACTION: "sales",
             names.FROM: 1,
-            names.TO: 2,
-            names.COUNT_SEND: 0.001,
+            names.TO: 3,
+            names.COUNT_SEND: 1,
             names.SESSION: "89a4ea52-c883-e1da-1e1e-f39469d7dfb1"
         }
         r = s.post(HOST + '/api/v1/quotation', data=args)
