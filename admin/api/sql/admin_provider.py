@@ -53,7 +53,31 @@ update users
 where id_user = {id_user}
 returning 200 as "Status"
                     """.format(pack=args[names.PACK],
-                               id_user=names.ID_USER)
+                               id_user=args[names.ID_USER])
+        print(query)
+        try:
+            result = Sql.exec(query=query)
+        except:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        if result == errors.SQL_ERROR:
+            return errors.SQL_ERROR, {"Status": errors.SQL_ERROR}
+        else:
+            return errors.OK, result[0]
+
+    @staticmethod
+    def change_status_pack(args):
+        """
+        Метод для ручного изменения пакета пользователя
+        :param args:
+        :return: dict
+        """
+        query = """
+    update users
+        set "status_pack" = '{status_pack}'
+    where id_user = {id_user}
+    returning 200 as "Status"
+                        """.format(status_pack=args[names.STATUS_PACK],
+                                   id_user=args[names.ID_USER])
         print(query)
         try:
             result = Sql.exec(query=query)
