@@ -34,3 +34,20 @@ class Provider:
             return errors.SQL_ERROR, None
         else:
             return errors.OK, auth_data[0]
+
+    def select_status_user(self, args):
+        query = """
+  select "status_pack"
+  from "users"
+  where "id_user" = (select id_user from session where session = '{Session}')
+                """.format(**args)
+        # print(query)
+        try:
+            auth_data = Sql.exec(query=query)
+        except:
+            return errors.SQL_ERROR, None
+        if auth_data == errors.SQL_ERROR:
+            return errors.SQL_ERROR, None
+        else:
+            return errors.OK, auth_data[0]
+

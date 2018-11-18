@@ -17,8 +17,8 @@ def auth(user_data):
         return errors.AUTH_FAILED, None
     provider = Provider()
     error, answer = provider.select_user(auth_data)
+    error, status = provider.select_status_user(answer)
+    answer['Status_pack'] = status.get('status_pack', 'Стандарт')
     if error == errors.OK:
         return errors.OK, answer
     return errors.AUTH_FAILED, None
-
-
