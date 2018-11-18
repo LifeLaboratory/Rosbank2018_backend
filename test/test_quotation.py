@@ -58,10 +58,11 @@ class TestQuotation(unittest.TestCase):
         s = req.Session()
         args = {
             names.ACTION: "purchase",
-            names.FROM: 1,
-            names.TO: 2,
-            names.COUNT_SEND: 0.001,
-            names.SESSION: "7d8144e0-f15f-6b70-ab42-51da2f1a9d09"
+            names.FROM: 2,
+            names.TO: 1,
+            names.COUNT_SEND: 1387500,
+            names.SESSION: "7d8144e0-f15f-6b70-ab42-51da2f1a9d09",
+            names.COST_USER: 10
         }
         r = s.post(HOST + '/api/v1/quotation', data=args)
         result = Gis.converter(r.text)
