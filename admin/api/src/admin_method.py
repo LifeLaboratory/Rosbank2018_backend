@@ -47,3 +47,26 @@ def change_pack(args):
     if error == errors.OK:
         return errors.OK, answer
     return errors.CHANGE_PACK, {"Status": errors.CHANGE_PACK}
+
+def change_status_pack(args):
+    """
+    Метод ручного изменения статуса пакета пользователя
+    :param args:
+    :return:
+    """
+    check = [names.ID_USER, names.STATUS_PACK]
+    data = dict.fromkeys(check, '')
+    if args.get(names.ID_USER, None) is None or args.get(names.STATUS_PACK, None) is None:
+        return errors.CHANGE_PACK, {"Status": errors.CHANGE_PACK}
+    if args.get(names.STATUS_PACK) == "Премиум" or args.get(names.STATUS_PACK) == "Стандарт":
+        for c in check:
+            if args.get(c, None) is None:
+                data[c] = None
+            else:
+                data[c] = args[c]
+        provider = Provider()
+        error, answer = provider.change_status_pack(data)
+        if error == errors.OK:
+            return errors.OK, answer
+        return errors.CHANGE_PACK, {"Status": errors.CHANGE_PACK}
+    return errors.CHANGE_PACK, {"Status": errors.CHANGE_PACK}

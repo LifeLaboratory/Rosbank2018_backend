@@ -106,6 +106,17 @@ class TestAdmin(unittest.TestCase):
         result = Gis.converter(r.text)
         self.assertEqual(result, 200)
 
+    def test_change_status_pack(self):
+        s = req.Session()
+        args = {
+            names.ID_USER: 64,
+            names.STATUS_PACK: "Стандарт"
+        }
+        r = s.post(HOST + '/api/v1/admin', data=args)
+        print(r.text)
+        result = Gis.converter(r.text)
+        self.assertEqual(result, 200)
+
     def test_list_users(self):
         s = req.Session()
         r = s.get(HOST + '/api/v1/admin?Action=list')
