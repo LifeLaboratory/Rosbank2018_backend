@@ -73,12 +73,14 @@ class TestQuotation(unittest.TestCase):
         args = {
             names.ACTION: "sales",
             names.FROM: 1,
-            names.TO: 3,
-            names.COUNT_SEND: 1,
-            names.SESSION: "89a4ea52-c883-e1da-1e1e-f39469d7dfb1"
+            names.TO: 2,
+            names.COUNT_SEND: 0.0001,
+            names.SESSION: "89a4ea52-c883-e1da-1e1e-f39469d7dfb1",
+            names.COST_USER: 100
         }
         r = s.post(HOST + '/api/v1/quotation', data=args)
         result = Gis.converter(r.text)
+        print(result)
         self.assertEqual(result.get(names.STATUS, None), 200)
         return
 

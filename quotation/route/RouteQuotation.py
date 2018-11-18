@@ -8,7 +8,8 @@ class Quotation(Resource):
     def __init__(self):
         self.arguments = [names.SESSION, names.ID_QUOTATION_TO, names.ID_QUOTATION_FROM,
                           names.COEFFICIENT_PURCHARE, names.COEFFICIENT_SALES, names.COST,
-                          names.ACTION, names.QUANT, names.FROM, names.TO, names.COUNT_SEND]
+                          names.ACTION, names.QUANT, names.FROM, names.TO, names.COUNT_SEND,
+                          names.COST_USER]
         self._parser = reqparse.RequestParser()
         for argument in self.arguments:
             self._parser.add_argument(argument)
@@ -53,7 +54,7 @@ class Quotation(Resource):
                     return answer, {'Access-Control-Allow-Origin': '*'}
             if data.get(names.ACTION) is not None and data.get(names.SESSION) is not None\
                     and data.get(names.FROM) is not None and data.get(names.TO) is not None\
-                    and data.get(names.COUNT_SEND) is not None:
+                    and data.get(names.COUNT_SEND) is not None and data.get(names.COST_USER):
                 # print(data)
                 error, answer = transaction(data)
                 if error == errors.OK:

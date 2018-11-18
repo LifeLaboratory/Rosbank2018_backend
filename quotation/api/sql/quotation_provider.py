@@ -198,7 +198,7 @@ select
 {id_user}
 , {id_quotation_from}
 , {id_quotation_to}
-, "cost"
+, {cost_user}
 , "cost_bank"
 , "name"
 , "coefficient"
@@ -207,7 +207,7 @@ select
 from quot
 returning 200 as "Status"
             """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], id_quotation_to=args[names.TO],
-                   count_send=args[names.COUNT_SEND], action=action)
+                   count_send=args[names.COUNT_SEND], action=action, cost_user=args[names.COST_USER])
         try:
             # print(query)
             result = Sql.exec(query=query)
@@ -230,10 +230,13 @@ select "cost" from quotation_users
     where id_user = {id_user} and id_quotation = {id_quotation}
 union
 select 
-    (  "cost" + "coefficient_sales" + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+    (  {cost_user} + "coefficient_sales" + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
     from quotation_trade
         where "id_quotation_from" = {id_quotation} and "id_quotation_to" = {id_quotation_to}
-        """.format(id_user=args[names.ID_USER], id_quotation=args[names.FROM], id_quotation_to=args[names.TO])
+        """.format(id_user=args[names.ID_USER],
+                   id_quotation=args[names.FROM],
+                   id_quotation_to=args[names.TO],
+                   cost_user=args[names.COST_USER])
         try:
             # print(query)
             result = Sql.exec(query=query)
@@ -253,13 +256,13 @@ select
         """
         query = """
 update quotation_users
-set "cost" = "cost" - {cost_from}
+set "cost" = "cost" - {cost_user}
 where id_user = {id_user} and id_quotation = {id_quotation_from};
 update quotation_users
 set "cost" = "cost" + {count_send}
 where id_user = {id_user} and id_quotation = {id_quotation_to};
             """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], count_send=args[names.COUNT_SEND],
-                       id_quotation_to=args[names.TO], cost_from=args["Cost_from"])
+                       id_quotation_to=args[names.TO], cost_user=args[names.COST_USER])
         try:
             # print(query)
             result = Sql.exec(query=query)
