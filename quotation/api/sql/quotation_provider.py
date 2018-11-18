@@ -100,7 +100,7 @@ returning id_quotation_to""".format(**args)
         query = """
 with 
   _pack as (
-    select pack + rating
+    select pack + rating as "pack"
     from users
     where id_user = {}
     limit 1
@@ -283,7 +283,7 @@ where id_user = {id_user} and id_quotation = {id_quotation_to};
         query = """
 with 
   _pack as (
-    select pack + rating
+    select pack + rating as "pack"
     from users
     where id_user = {}
     limit 1
