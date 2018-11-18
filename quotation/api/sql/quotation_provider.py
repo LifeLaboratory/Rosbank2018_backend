@@ -292,7 +292,7 @@ select
 from quotation_history
 where id_quotation_to = {} and id_quotation_from = {}
 order by quant desc
-limit 1000
+limit 250
                 """.format(user_data.get('id_user'), user_data.get('From'), user_data.get('To'))
         # print(query)
         try:
