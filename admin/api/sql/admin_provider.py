@@ -74,6 +74,7 @@ select id_user
        , name as "Name"
        , login as "Login"
        , pack::double precision as "Pack"
+       , status_pack as "Status_pack"
 from users
 where privilege = 0
                 """
