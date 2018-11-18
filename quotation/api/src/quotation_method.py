@@ -1,7 +1,7 @@
 import quotation.api.helpers.base_name as names
 import quotation.api.helpers.base_errors as errors
 from quotation.api.sql.quotation_provider import Provider
-
+from time import sleep
 
 def quotation_user(args):
     """
@@ -81,11 +81,21 @@ def transaction(args):
     """
     provider = Provider()
     error, check_cost = provider.check_cost_user(args)
+    print("ЦЕНА ПОКУПКИ КЛИЕНТА", check_cost[0]["cost"])
     if check_cost[1]["cost"] - (check_cost[0]["cost"]*float(args[names.COUNT_SEND])) >= 0:
-        args["Cost_from"] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
+        args[names.COST_USER] = check_cost[0]["cost"]
+        args[names.COST_FROM] = check_cost[0]["cost"]*float(args[names.COUNT_SEND])
+        check_action(args)
         error, result = provider.update_quotation_users(args)
-        error, result = provider.insert_history_sale(args)
+        sleep(1)
+        error, result = provider.insert_history_purchase(args)
         return error, result
+    else:
+        return errors.OK, {names.STATUS: errors.NO_BALANCE}
+
+def check_action(args):
+    if args.get(names.ACTION) == "purchase":
+        args[names.COST_FROM], args[names.COUNT_SEND] = args[names.COUNT_SEND], args[names.COST_FROM]
 
 def get_graph(args):
     """
@@ -103,10 +113,10 @@ def get_graph(args):
         else:
             data[c] = args[c]
     if error:
-        return errors.logic, None
+        return errors.logic, errors.logic
     provider = Provider()
     # print(args)
     error, answer = provider.get_graph(args)
     if error == errors.OK:
         return errors.OK, answer
-    return errors.logic, None
+    return errors.logic, errors.logic

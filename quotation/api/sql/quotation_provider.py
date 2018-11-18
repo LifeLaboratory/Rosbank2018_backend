@@ -133,7 +133,7 @@ from quotation_trade
         query = """
 with quot as (
 select 
-(   "cost" + "coefficient_sales" + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
+(   {cost_user} + "coefficient_sales" + (select "pack" from users where "id_user" = {id_user}))::double precision as "cost" 
     ,"cost" as "cost_bank"
     , "name"
     , "coefficient_sales" as "coefficient"
@@ -155,8 +155,11 @@ select
 , {count_send}
 from quot
 returning 200 as "Status"
-        """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], id_quotation_to=args[names.TO],
-                   count_send=args[names.COUNT_SEND])
+        """.format(id_user=args[names.ID_USER],
+                   id_quotation_from=args[names.FROM],
+                   id_quotation_to=args[names.TO],
+                   count_send=args[names.COUNT_SEND],
+                   cost_user=args[names.COST_USER])
         try:
             # print(query)
             result = Sql.exec(query=query)
@@ -176,10 +179,8 @@ returning 200 as "Status"
         """
         if args[names.ACTION] == "sales":
             action = '+'
-        if args[names.ACTION] == "purchase":
+        elif args[names.ACTION] == "purchase":
             action = '-'
-        else:
-            return errors.SQL_ERROR, None
         query = """
 with quot as (
 select 
@@ -215,7 +216,7 @@ returning 200 as "Status"
         if result == errors.SQL_ERROR:
             return errors.SQL_ERROR, None
         else:
-            return errors.OK, result
+            return errors.OK, result[0]
 
     @staticmethod
     def check_cost_user(args):
@@ -256,7 +257,7 @@ set "cost" = "cost" - {cost_from}
 where id_user = {id_user} and id_quotation = {id_quotation_from};
 update quotation_users
 set "cost" = "cost" + {count_send}
-where {id_user} = {id_user} and id_quotation = {id_quotation_to};
+where id_user = {id_user} and id_quotation = {id_quotation_to};
             """.format(id_user=args[names.ID_USER], id_quotation_from=args[names.FROM], count_send=args[names.COUNT_SEND],
                        id_quotation_to=args[names.TO], cost_from=args["Cost_from"])
         try:

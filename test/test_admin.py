@@ -110,6 +110,7 @@ class TestAdmin(unittest.TestCase):
         s = req.Session()
         r = s.get(HOST + '/api/v1/admin?Action=list')
         result = Gis.converter(r.text)
+        print(result)
         self.assertTrue(result, None)
 
 

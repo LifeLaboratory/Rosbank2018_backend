@@ -49,7 +49,7 @@ returning 200 as "Status"
         """
         query = """
 update users
-    set pack = {pack}
+    set rating = {pack}
 where id_user = {id_user}
 returning 200 as "Status"
                     """.format(pack=args[names.PACK],

@@ -19,9 +19,9 @@ class Quotation(Resource):
             data = dict()
             for argument in self.arguments:
                 data[argument] = self.__args.get(argument, None)
-                # if data[argument]:
-                #     print(argument, data[argument])
-            if data[names.SESSION]:
+                if data[argument]:
+                    print(argument, data[argument])
+            if data[names.SESSION] is not None:
                 p = Provider()
                 data[names.ID_USER] = p.select_id_user(data[names.SESSION])
         except:
@@ -51,9 +51,9 @@ class Quotation(Resource):
                 if error == errors.OK:
                     # print("answer", answer)
                     return answer, {'Access-Control-Allow-Origin': '*'}
-            elif data[names.ACTION] is not None and data[names.SESSION] is not None\
-                    and data[names.FROM] is not None and data[names.TO] is not None\
-                    and data[names.COUNT_SEND]:
+            if data.get(names.ACTION) is not None and data.get(names.SESSION) is not None\
+                    and data.get(names.FROM) is not None and data.get(names.TO) is not None\
+                    and data.get(names.COUNT_SEND) is not None:
                 # print(data)
                 error, answer = transaction(data)
                 if error == errors.OK:
@@ -62,7 +62,7 @@ class Quotation(Resource):
                 error, answer = put_quotation_history(data)
                 if error == errors.OK:
                     return answer, {'Access-Control-Allow-Origin': '*'}
-        return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
+        return {names.STATUS: errors.CHECK_DATA}, {'Access-Control-Allow-Origin': '*'}
 
     def options(self):
         return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
