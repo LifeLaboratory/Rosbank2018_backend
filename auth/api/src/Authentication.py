@@ -3,22 +3,36 @@ import auth.api.helpers.base_errors as errors
 from auth.api.sql.auth_provider import Provider
 
 
-def auth(user_data):
+def check_data(data):
     check = [names.LOGIN, names.PASSWORD, names.PAGE]
-    auth_data = dict.fromkeys(check, '')
+    check_data = dict.fromkeys(check, '')
     error = False
     for c in check:
-        if user_data.get(c, None) is None:
-            auth_data[c] = 'Пустой параметр!'
+        if data.get(c, None) is None:
+            check_data[c] = 'Пустой параметр!'
             error = True
         else:
-            auth_data[c] = user_data[c]
+            check_data[c] = data[c]
     if error:
-        return errors.AUTH_FAILED, None
+        return 400, None
+    if check_data[names.PAGE] == "client" or check_data[names.PAGE] == "employee":
+        if check_data[names.PAGE] == "client":
+            check_data[names.PAGE] = 0
+        if check_data[names.PAGE] == "employee":
+            check_data[names.PAGE] = 1
+    else:
+        return 400, None
+    return 200, check_data
+
+
+def auth(data):
+    status_code, data = check_data(data)
+    if status_code == 400:
+        return 400, None
     provider = Provider()
-    error, answer = provider.select_user(auth_data)
-    error, status = provider.select_status_user(answer)
-    answer['Status_pack'] = status.get('status_pack', 'Стандарт')
-    if error == errors.OK:
-        return errors.OK, answer
-    return errors.AUTH_FAILED, None
+    status_code, answer = provider.select_user(data)
+    # status_code, status = provider.select_status_user(answer)
+    # answer['Status_pack'] = status.get('status_pack', 'Стандарт')
+    if status_code == 200:
+        return 200, answer
+    return 500, None

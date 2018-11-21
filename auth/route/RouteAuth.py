@@ -1,11 +1,10 @@
 # coding=utf-8
-from auth.api.helpers import base_errors as errors
 from auth.api.helpers import base_name as names
 from flask_restful import Resource, reqparse
 from auth.api.src.Authentication import auth
 
 
-class Service(Resource):
+class Auth(Resource):
     def __init__(self):
         self._parser = reqparse.RequestParser()
         self._parser.add_argument(names.LOGIN)
@@ -20,21 +19,16 @@ class Service(Resource):
             data[names.PASSWORD] = self.__args.get(names.PASSWORD, None)
             data[names.PAGE] = self.__args.get(names.PAGE, None)
         except:
-            return errors.PARSE_DATA, None
+            return 500, None
         if data[names.LOGIN] is None or data[names.PASSWORD] is None or data[names.PAGE] is None:
-            return errors.PARSE_DATA, None
+            return 400, None
         else:
-            return errors.OK, data
+            return 200, data
 
     def post(self):
-        error, data = self.parse_data()
-        if error == errors.OK:
-            error, answer = auth(data)
-            if error == errors.OK:
-                return answer, {'Access-Control-Allow-Origin': '*'}
-        return {names.SESSION: None}, {'Access-Control-Allow-Origin': '*'}
-
-    def options(self):
-        return "OK", errors.OK, {'Access-Control-Allow-Origin': '*',
-                                 'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,OPTIONS',
-                                 'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type'}
+        status_code, data = self.parse_data()
+        if status_code == 200:
+            status_code, answer = auth(data)
+            if status_code == 200:
+                return answer, {"status": status_code}
+        return None, {"status": status_code}

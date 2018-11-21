@@ -11,11 +11,11 @@ class TestAuth(unittest.TestCase):
         data = {
                 names.LOGIN: 'boris',
                 names.PASSWORD: 'boris',
-                names.PAGE: 0
+                names.PAGE: 'client'
                 }
         result = auth(data)
         self.assertEqual(result[0], 200)
-        self.assertTrue(result[1], None)
+        self.assertTrue(result[1]['session'], None)
         return
 
     def test_auth_back_staff(self):

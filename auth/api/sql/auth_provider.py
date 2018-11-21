@@ -5,10 +5,6 @@ from auth.api.helpers.service import Sql
 
 class Provider:
     def select_user(self, args):
-        if args[names.PAGE] == "client":
-            args[names.PAGE] = 0
-        if args[names.PAGE] == "employee":
-            args[names.PAGE] = 1
         query = """
                     insert into "session"("session", "id_user")
                     select md5(random()::text || clock_timestamp()::text)::uuid
@@ -27,13 +23,13 @@ class Provider:
                 """.format(Login=args[names.LOGIN], Password=args[names.PASSWORD], Pages=args[names.PAGE])
         # print(query)
         try:
-            auth_data = Sql.exec(query=query)
+            data = Sql.exec(query=query)
         except:
-            return errors.SQL_ERROR, None
-        if auth_data == errors.SQL_ERROR or auth_data[0] is None:
-            return errors.SQL_ERROR, None
+            return 500, None
+        if data == 500 or data[0] is None:
+            return 500, None
         else:
-            return errors.OK, auth_data[0]
+            return errors.OK, data[0]
 
     def select_status_user(self, args):
         query = """
@@ -43,11 +39,11 @@ class Provider:
                 """.format(**args)
         # print(query)
         try:
-            auth_data = Sql.exec(query=query)
+            data = Sql.exec(query=query)
         except:
-            return errors.SQL_ERROR, None
-        if auth_data == errors.SQL_ERROR:
-            return errors.SQL_ERROR, None
+            return 500, None
+        if data == 500:
+            return 500, None
         else:
-            return errors.OK, auth_data[0]
+            return errors.OK, data[0]
 

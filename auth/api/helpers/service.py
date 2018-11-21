@@ -66,14 +66,14 @@ class Sql:
             connect = psycopg2.connect(config_connect.format(**DATABASE))
             return connect, connect.cursor(cursor_factory=RealDictCursor)
         except:
-            return errors.SQL_ERROR
+            return 500
 
     @staticmethod
     def exec(query=None, args=None, file=None):
         try:
             return Sql._switch(query=query, args=args, file=file)
         except:
-            return errors.SQL_ERROR
+            return 500
 
     @staticmethod
     def _switch(query=None, args=None, file=None):
@@ -85,7 +85,7 @@ class Sql:
             return Sql._query_file_args_exec(file, args)
         if file:
             return Sql._query_file_exec(file)
-        return errors.SQL_ERROR
+        return 500
 
     @staticmethod
     def _query_exec(query):
@@ -119,7 +119,7 @@ class Sql:
             connect, current_connect = Sql.connect()
             result = None
         except:
-            return errors.SQL_ERROR
+            return 500
         try:
             current_connect.execute(query)
         except psycopg2.Error as e:
